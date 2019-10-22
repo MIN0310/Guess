@@ -8,40 +8,56 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    String TAG = MainActivity.class.getSimpleName();
     int secret = new Random().nextInt(10)+1;
     private TextView number;
+    private ImageView result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "secret: " + secret);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         number = findViewById(R.id.guess_number);
+        result = findViewById(R.id.smile_image);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int num = Integer.parseInt(number.getText().toString());
+                result.setVisibility(View.VISIBLE);
+                result.setAlpha(1.0f);
 
                 if (num == secret){
                     Toast.makeText(MainActivity.this, "BINGO!!", Toast.LENGTH_LONG).show();
+                    result.setImageResource(R.drawable.bomb);
                 } else if (num > secret) {
-                    Toast.makeText(MainActivity.this, "lower", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "再低", Toast.LENGTH_LONG).show();
+                    result.setImageResource(R.drawable.smile);
+                    result.animate().alpha(0.0f).setDuration(1200);
                 } else if (num < secret) {
-                    Toast.makeText(MainActivity.this, "higher", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "再高", Toast.LENGTH_LONG).show();
+                    result.setImageResource(R.drawable.smile);
+                    result.animate().alpha(0.0f).setDuration(1200);
                 }
+
             }
         });
     }
