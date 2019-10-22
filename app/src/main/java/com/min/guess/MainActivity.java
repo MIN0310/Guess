@@ -41,10 +41,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                reset();
             }
         });
     }
+
+    private void reset() {
+        secret = new Random().nextInt(10)+1;
+    }
+
     public void guess(View view) {
         int num = Integer.parseInt(number.getText().toString());
         result.setVisibility(View.VISIBLE);
