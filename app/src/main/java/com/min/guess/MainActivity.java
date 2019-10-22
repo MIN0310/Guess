@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void reset() {
         secret = new Random().nextInt(10)+1;
+        Log.d(TAG, "secret: " + secret);
     }
 
     public void guess(View view) {
