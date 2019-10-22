@@ -41,26 +41,30 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int num = Integer.parseInt(number.getText().toString());
-                result.setVisibility(View.VISIBLE);
-                result.setAlpha(1.0f);
-
-                if (num == secret){
-                    Toast.makeText(MainActivity.this, "BINGO!!", Toast.LENGTH_LONG).show();
-                    result.setImageResource(R.drawable.bomb);
-                } else if (num > secret) {
-                    Toast.makeText(MainActivity.this, "再低", Toast.LENGTH_LONG).show();
-                    result.setImageResource(R.drawable.smile);
-                    result.animate().alpha(0.0f).setDuration(1200);
-                } else if (num < secret) {
-                    Toast.makeText(MainActivity.this, "再高", Toast.LENGTH_LONG).show();
-                    result.setImageResource(R.drawable.smile);
-                    result.animate().alpha(0.0f).setDuration(1200);
-                }
 
             }
         });
     }
+    public void guess(View view) {
+        int num = Integer.parseInt(number.getText().toString());
+        result.setVisibility(View.VISIBLE);
+        result.setAlpha(1.0f);
+
+        if (num == secret){
+            Toast.makeText(MainActivity.this, "BINGO!!", Toast.LENGTH_LONG).show();
+            result.setImageResource(R.drawable.bomb);
+        } else if (num > secret) {
+            Toast.makeText(MainActivity.this, "再低", Toast.LENGTH_LONG).show();
+            result.setImageResource(R.drawable.smile);
+            result.animate().alpha(0.0f).setDuration(1200);
+        } else if (num < secret) {
+            Toast.makeText(MainActivity.this, "再高", Toast.LENGTH_LONG).show();
+            result.setImageResource(R.drawable.smile);
+            result.animate().alpha(0.0f).setDuration(1200);
+        }
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
