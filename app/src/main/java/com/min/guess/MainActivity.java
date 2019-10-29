@@ -1,10 +1,12 @@
 package com.min.guess;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,8 +23,10 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     String TAG = MainActivity.class.getSimpleName();
     int secret = new Random().nextInt(10)+1;
+    int counter;
     private TextView number;
     private ImageView result;
+    private TextView edCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         number = findViewById(R.id.guess_number);
         result = findViewById(R.id.smile_image);
+        edCounter = findViewById(R.id.counter);
+        edCounter.setText(counter + "");
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -50,22 +56,43 @@ public class MainActivity extends AppCompatActivity {
     private void reset() {
         secret = new Random().nextInt(10)+1;
         Log.d(TAG, "secret: " + secret);
+        counter = 0;
+        edCounter.setText(counter + "");
     }
 
     public void guess(View view) {
         int num = Integer.parseInt(number.getText().toString());
         result.setVisibility(View.VISIBLE);
         result.setAlpha(1.0f);
+        counter++;
+        edCounter.setText(counter + "");
 
         if (num == secret){
-            Toast.makeText(MainActivity.this, "BINGO!!", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("你的數字")
+                    .setMessage("答對了!!你猜了" + counter +"次")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            reset();
+                        }
+                    })
+                    .show();
             result.setImageResource(R.drawable.bomb);
         } else if (num > secret) {
-            Toast.makeText(MainActivity.this, "再低", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("你的數字")
+                    .setMessage("再小")
+                    .setPositiveButton("OK", null)
+                    .show();
             result.setImageResource(R.drawable.smile);
             result.animate().alpha(0.0f).setDuration(1200);
         } else if (num < secret) {
-            Toast.makeText(MainActivity.this, "再高", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("你的數字")
+                    .setMessage("再大")
+                    .setPositiveButton("OK", null)
+                    .show();
             result.setImageResource(R.drawable.smile);
             result.animate().alpha(0.0f).setDuration(1200);
         }
